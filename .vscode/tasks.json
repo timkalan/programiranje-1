@@ -9,14 +9,15 @@
                 "isDefault": true
             },
             "windows": {
-                "command": "python -i \\\"${file}\\\""
-                },
+                "command": "python3 -i \\\"${file}\\\""
+            },
             "linux": {
-                "command": "python -i \"${file}\""
+                "command": "python3 -i \"${file}\""
             },
             "osx": {
-                "command": "python -i \"${file}\""
-            }
+                "command": "python3 -i \"${file}\""
+            },
+            "problemMatcher": []
         },
         {
             "label": "OCaml",
@@ -27,7 +28,7 @@
             },
             "windows": {
                 "command": "ocaml -init \\\"${file}\\\""
-                },
+            },
             "linux": {
                 "command": "ocaml -init \"${file}\""
             },
