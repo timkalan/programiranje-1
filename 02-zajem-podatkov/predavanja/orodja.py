@@ -5,6 +5,7 @@ import requests
 import sys
 
 
+# izlušči ime mape iz filename in naredi to mapo
 def pripravi_imenik(ime_datoteke):
     '''Če še ne obstaja, pripravi prazen imenik za dano datoteko.'''
     imenik = os.path.dirname(ime_datoteke)
@@ -12,6 +13,7 @@ def pripravi_imenik(ime_datoteke):
         os.makedirs(imenik, exist_ok=True)
 
 
+# sharni stran, če še ni shranjena
 def shrani_spletno_stran(url, ime_datoteke, vsili_prenos=False):
     '''Vsebino strani na danem naslovu shrani v datoteko z danim imenom.'''
     try:
