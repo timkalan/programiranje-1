@@ -19,7 +19,7 @@ let rec reverse_pocasi = function
     | x :: rep -> (reverse_pocasi rep) @ [x]
 
 
-(* uporaba akumulatorjev - grad*)
+(* uporaba akumulatorjev - grad *)
 let rec reverse sez = 
     let rec reverse_pomozna grad = function
         | [] -> grad
