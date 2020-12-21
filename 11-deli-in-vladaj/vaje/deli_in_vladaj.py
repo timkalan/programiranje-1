@@ -27,8 +27,23 @@
 #     [10, 2, 0, 4, 11, 15, 17, 5, 18]
 ###############################################################################
 
+def pivot(a, start, end):
+    p = a[start]
+    left = start 
+    right = end
+    while left != right: 
+        if a[left] < p:
+            left += 1
+        elif a[right] > p:
+            right -= 1
+        else: 
+            a[left], a[right] = a[right], a[left]
+    return left
 
 
+a = [10, 4, 5, 15, 11, 2, 17, 0, 18]
+print(pivot(a, 0, 8))
+print(a)
 ###############################################################################
 # V tabeli želimo poiskati vrednost k-tega elementa po velikosti.
 #
@@ -44,7 +59,19 @@
 # jo rešite brez da v celoti uredite tabelo [a].
 ###############################################################################
 
+def k_ti_po_vrsti(a, k, start, stop):
+    pivot_i = pivot(a, start, stop)
+    if pivot_i > k:
+        k_ti_po_vrsti(a, k, start, pivot_i - 1)
+    if pivot_i < k:
+        return k_ti_po_vrsti(a, k, pivot_i + 1, stop)
+    return a[pivot_i]
+    
 
+def kth_element(a, k):
+    if k >= len(a):
+        return None 
+    return k_ti_po_vrsti(a, k, 0, len(a)-1)
 
 ###############################################################################
 # Tabelo a želimo urediti z algoritmom hitrega urejanja (quicksort).
@@ -60,7 +87,14 @@
 #     [2, 3, 4, 5, 10, 11, 15, 17, 18]
 ###############################################################################
 
-
+def quicksort(a, start=0, stop=None):
+    if stop is None:
+        stop = len(a) - 1
+    if start >= stop:
+        return 
+    pivot_i = pivot(a, start, stop)
+    quicksort(a, start, pivot_i - 1)
+    quicksort(a, pivot_i, stop)
 
 ###############################################################################
 # Če imamo dve urejeni tabeli, potem urejeno združeno tabelo dobimo tako, da
@@ -85,7 +119,24 @@
 #
 ###############################################################################
 
-
+def zlij(target, begin, end, list_1, list_2):
+    i1 = 0 
+    i2 = 0
+    while (i1 < len(list_1) and 12 < len(list_2)):
+        if list_1[i1] <= list_2[i2]:
+            target[begin + i1 + i2] = list_1[i1]
+            i1 += 1
+        else:
+            target[begin + i1 + i2] = list_2[i2]
+            i2 += 2
+        
+    # en je itak že n koncu, samo en while se izvede
+    while i1 < len(list_1):
+        target[begin + i1 + i2] = list_1[i1]
+        i1 += 1
+    while i2 < len(list_2):
+        target[begin + i1 + i2] = list_2[i2]
+        i2 += 1
 
 ###############################################################################
 # Tabelo želimo urediti z zlivanjem (merge sort). 
@@ -102,3 +153,22 @@
 # >>> mergesort(a)
 # [2, 3, 4, 5, 10, 11, 15, 17, 18]
 ###############################################################################
+
+def mergesort(a, begin=0, end=None):
+    if end is None:
+        end = len(a)
+
+    # seznam ima dolžino >= 2, torej urejamo
+    if end - begin > 1:
+        midpoint = (begin + end) // 2
+        mergesort(a, begin, midpoint)
+        mergesort(a, midpoint, end)
+
+        # skopiramo, če ne štala v zlij
+        prvi = a[begin:midpoint]
+        drugi = a[midpoint:end]
+
+        zlij(a, begin, end, prvi, drugi)
+
+    else:
+        return a
