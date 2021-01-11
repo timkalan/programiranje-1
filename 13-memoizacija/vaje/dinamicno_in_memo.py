@@ -16,7 +16,22 @@ from functools import lru_cache
 # najdaljših naraščajočih podzaporedij.
 # -----------------------------------------------------------------------------
 
+def najdaljse_narascajoce_podzaporedje(l):
 
+    @lru_cache(maxsize=None)
+    def podzaporedje(i, zadnji):
+        if i >= len(l):
+            return []
+        if sez[i] >= zadnji:
+            vzamemo = [l[i]] + podzaporedje(i + 1, l[i])
+            ne_vzamemo = podzaporedje(i + 1, zadnji)
+            if len(vzamemo) >= len(ne_vzamemo): 
+                return vzamemo
+            return ne_vzamemo
+        else:
+            return podzaporedje(i + 1, zadnji)
+
+    return  podzaporedje(0, float('-inf'))
 
 # =============================================================================
 # Žabica
@@ -43,7 +58,18 @@ from functools import lru_cache
 # dva.
 # =============================================================================
 
+def zabica(mocvara):
 
+    def pobeg_notranji(i, e_ostanek):
+        if i >= len(mocvara):
+            return 0 
+        
+        energija = e_ostanek  + mocvara[i]
+        navzdol = [pobeg_notranji(i + dolzina_skoka, energija - dolzina_skoka) 
+                    for dolzina_skoka in range(1, energija + 1)]
+        return 1 + min(navzdol)
+
+    return pobeg_notranji(0, 0)
 
 # =============================================================================
 # Nageljni

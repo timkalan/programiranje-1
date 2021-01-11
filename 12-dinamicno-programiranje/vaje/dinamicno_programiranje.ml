@@ -17,9 +17,42 @@
 [*----------------------------------------------------------------------------*)
 
 let test_matrix = 
-  [| [| 1 ; 2 ; 0 |];
-     [| 2 ; 4 ; 5 |];
-     [| 7 ; 0 ; 1 |] |]
+   [| [| 1 ; 2 ; 0 |];
+    [| 2 ; 4 ; 5 |];
+    [| 7 ; 0 ; 1 |] |]
+
+
+(* dostopanje do elementov
+let zacetek = test_matrix.(0).(0)
+*)
+
+let max_cheese matrix = 
+    let h = Array.length matrix in
+    let w = Array.length matrix.(0) in
+    let rec aux vrstica_i stolpec_i = 
+        if vrstica_i > (h-1) || stolpec_i > (w-1) then 0 
+        else (
+            let right = aux vrstica_i (stolpec_i + 1) in 
+            let down = aux (vrstica_i + 1) stolpec_i in
+            matrix.(vrstica_i).(stolpec_i) + (max right down)
+            )
+    in 
+    aux 0 0
+
+
+(* to je ti. bottom up approach *)
+let max_cheese_bottom matrix = 
+    let h = Array.length matrix in
+    let memo = Array.make_matrix (h+1) (h+1) 0 in 
+    for row_i = (h-1) downto 0 do 
+        for col_i = (h-1) downto 0 do
+            let down = memo.(row_i + 1).(col_i) in 
+            let right = memo.(row_i).(col_i + 1) in 
+            memo.(row_i).(col_i) <- matrix.(row_i).(col_i) + max down right
+        done; 
+    done;
+    memo.(0).(0)
+
 
 (*----------------------------------------------------------------------------*]
  Poleg količine sira, ki jo miška lahko poje, jo zanima tudi točna pot, ki naj
@@ -39,6 +72,49 @@ let test_matrix =
 type mouse_direction = Down | Right
 
 
+let optimal_path matrix = 
+    let h = Array.length matrix in
+    let w = Array.length matrix.(0) in
+    (* najboljša cena, najboljša pot *)
+    let rec aux vrstica_i stolpec_i = 
+        if vrstica_i > (h-1) || stolpec_i > (w-1) then (0, [])
+        else 
+            let right, path_right = aux vrstica_i (stolpec_i + 1) in 
+            let down, path_down = aux (vrstica_i + 1) stolpec_i in
+            if right >= down then 
+            (matrix.(vrstica_i).(stolpec_i) + right, Right :: path_right)
+            else
+            (matrix.(vrstica_i).(stolpec_i) + down, Down :: path_down)
+    in 
+    (* pozor, zadnji člen je odveč *)
+    aux 0 0 |> snd
+
+
+let optimal_path_bottom matrix = 
+    let h = Array.length matrix in
+    let memo = Array.make_matrix (h+1) (h+1) (0, None) in 
+    for row_i = (h-1) downto 0 do 
+        for col_i = (h-1) downto 0 do
+            let down, _ = memo.(row_i + 1).(col_i) in 
+            let right , _ = memo.(row_i).(col_i + 1) in 
+            if right >= down then
+            memo.(row_i).(col_i) <- (matrix.(row_i).(col_i) + right, Some Right)
+            else
+            memo.(row_i).(col_i) <- (matrix.(row_i).(col_i) + down, Some Down)
+        done; 
+    done;
+    memo.(0).(0)
+
+
+let convert_path pot matrika = 
+    let rec aux gradimo i j = function
+        | [] -> List.rev gradimo
+        | Right :: xs -> aux (matrika.(i).(j) :: gradimo) i (j+1) xs
+        | Down :: xs -> aux (matrika.(i).(j) :: gradimo) (i+1) j xs
+    in 
+    aux [] 0 0 pot
+
+
 (*----------------------------------------------------------------------------*]
  Rešujemo problem sestavljanja alternirajoče obarvanih stolpov. Imamo štiri
  različne tipe gradnikov, dva modra in dva rdeča. Modri gradniki so višin 2 in
@@ -55,7 +131,7 @@ type mouse_direction = Down | Right
  - : int = 35
 [*----------------------------------------------------------------------------*)
 
-
+let alternating_towers = ()
 
 (*----------------------------------------------------------------------------*]
  Izračunali smo število stolpov, a naše vrle gradbince sedaj zanima točna
