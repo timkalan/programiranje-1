@@ -40,13 +40,10 @@ def pivot(a, start, end):
             a[left], a[right] = a[right], a[left]
     return left
 
-<<<<<<< HEAD
 
 a = [10, 4, 5, 15, 11, 2, 17, 0, 18]
 print(pivot(a, 0, 8))
 print(a)
-=======
->>>>>>> 8b5ce2637b0b0dba122afd6a32478c6f936a9972
 ###############################################################################
 # V tabeli želimo poiskati vrednost k-tega elementa po velikosti.
 #
@@ -71,14 +68,11 @@ def k_ti_po_vrsti(a, k, start, stop):
     return a[pivot_i]
     
 
-<<<<<<< HEAD
 def kth_element(a, k):
     if k >= len(a):
         return None 
     return k_ti_po_vrsti(a, k, 0, len(a)-1)
 
-=======
->>>>>>> 8b5ce2637b0b0dba122afd6a32478c6f936a9972
 ###############################################################################
 # Tabelo a želimo urediti z algoritmom hitrega urejanja (quicksort).
 #
@@ -94,7 +88,6 @@ def kth_element(a, k):
 #     [2, 3, 4, 5, 10, 11, 15, 17, 18]
 ###############################################################################
 
-<<<<<<< HEAD
 def quicksort(a, start=0, stop=None):
     if stop is None:
         stop = len(a) - 1
@@ -103,8 +96,6 @@ def quicksort(a, start=0, stop=None):
     pivot_i = pivot(a, start, stop)
     quicksort(a, start, pivot_i - 1)
     quicksort(a, pivot_i, stop)
-=======
->>>>>>> 8b5ce2637b0b0dba122afd6a32478c6f936a9972
 
 ###############################################################################
 # Če imamo dve urejeni tabeli, potem urejeno združeno tabelo dobimo tako, da
