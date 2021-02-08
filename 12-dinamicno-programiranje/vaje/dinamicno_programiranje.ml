@@ -131,7 +131,7 @@ let convert_path pot matrika =
  - : int = 35
 [*----------------------------------------------------------------------------*)
 
-let alternating_towers = ()
+let alternating_towers visina = ()
 
 (*----------------------------------------------------------------------------*]
  Izračunali smo število stolpov, a naše vrle gradbince sedaj zanima točna
