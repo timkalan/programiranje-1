@@ -153,7 +153,7 @@ let rec member x = function
     | Vozlisce (l, y, r) -> 
         if (x < y) then member x l
         else if (x > y) then member x r
-        else true
+        else x = y
 
 (*----------------------------------------------------------------------------*]
  Funkcija [member2] ne privzame, da je drevo bst.

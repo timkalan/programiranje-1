@@ -102,6 +102,11 @@ def nageljni_stevilo(n, m, l):
         return nageljni_stevilo(n-1, m, l) + nageljni_stevilo(n-l-1, m-1, l)
 
 
+def nageljni(n, m, l):
+    postavitve = []
+
+
+
 
 # =============================================================================
 # Pobeg iz Finske
@@ -207,3 +212,47 @@ def pobeg(soba, vrsta, stolpec, koraki):
         else:
             return False
     return pobegni(vrsta, stolpec, koraki)
+
+
+def pot_pobega(soba, vrsta, stolpec, koraki):
+    max_vrsta = len(soba)
+    max_stolpec = len(soba[0])
+    pot = []
+
+    @lru_cache(maxsize=None)
+    def pobegni(vrsta, stolpec, koraki):
+        # Padli smo iz sobe
+        if not (0 <= vrsta < max_vrsta) or not (0 <= stolpec < max_stolpec):
+            return False
+        # Pobeg uspesen! All hail our robot overlords!!!
+        elif soba[vrsta][stolpec] == 1:
+            return True
+        # Lahko bezimo naprej
+        elif soba[vrsta][stolpec] == 0 and koraki > 0:
+            if pobegni(vrsta + 1, stolpec, koraki-1):
+                pot.append('dol')
+                return True
+            elif pobegni(vrsta - 1, stolpec, koraki-1):
+                pot.append('gor')
+                return True
+            elif pobegni(vrsta, stolpec + 1, koraki-1):
+                pot.append('desno')
+                return True
+            elif pobegni(vrsta, stolpec - 1, koraki-1):
+                pot.append('levo')
+                return True
+            else:
+                return False
+        # Pristali smo na oviri ali pa nam je zmanjkalo korakov
+        else:
+            return False
+    return pobegni(vrsta, stolpec, koraki), pot[::-1]
+
+test = [[0, 1, 0, 0, 2],
+      [0, 2, 2, 0, 0],
+      [0, 0, 2, 2, 0],
+      [2, 0, 0, 2, 0],
+      [0, 2, 2, 0, 0],
+      [0, 0, 0, 2, 2]]
+
+print(pot_pobega(test, 3, 1, 5))
